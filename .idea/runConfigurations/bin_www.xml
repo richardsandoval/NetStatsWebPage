@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="bin/www" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="$USER_HOME$/.nvm/versions/node/v4.1.0/bin/node" path-to-js-file="$USER_HOME$/WebstormProjects/netstats_project_pucmm/bin/www" working-dir="$USER_HOME$/WebstormProjects/netstats_project_pucmm">
+    <envs>
+      <env name="DEBUG" value="netstarts_project_pucmm:*" />
+    </envs>
+    <browser url="http://localhost:3000/" />
+    <method />
+  </configuration>
+</component>
