@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$USER_HOME$/WebstormProjects/netstats_project_pucmm/.idea/netstats_project_pucmm.iml" filepath="$USER_HOME$/WebstormProjects/netstats_project_pucmm/.idea/netstats_project_pucmm.iml" />
-    </modules>
+    <modules />
   </component>
 </project>

@@ -2,12 +2,25 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cons    = require('consolidate');
+var cons = require('consolidate');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http');
+var LocalStrategy = require('passport-local').Strategy;
 
-var routes = require('./lib/routes/index');
+//Base de datos MongoDB
+var dbConfig = require('./db');
+var mongoose = require('mongoose');
+//Connect to DB
+mongoose.connect(dbConfig.url);
+
+// Rutas
+// var routes = require('./lib/routes/login')(passport);
 var users = require('./lib/routes/users');
+var home = require('./lib/routes/home');
+var register = require('./lib/routes/signup');
+
+
 
 var app = express();
 
@@ -24,9 +37,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, '/lib/public/vendor')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/home', home);
+app.use('/signup', register);
+
+
+// Configuring Passport
+var passport = require('passport');
+var expressSession = require('express-session');
+
+
+// TODO - Why Do we need this key ?
+app.use(expressSession({secret: 'mySecretKey'}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+/*
+// Using the flash middleware provided by connect-flash to store messages in session
+// and displaying in templates
+var flash = require('connect-flash');
+app.use(flash());
+*/
+
+
+// Initialize Passport
+var initPassport = require('./lib/routes/init');
+initPassport(passport);
+var routes = require('./lib/routes/login')(passport);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,5 +101,17 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+app.get('/pages/home', function(req, res){
+  res.render('home', {
+    title: 'Home'
+  });
+});
+
+app.get('/pages/signup', function(req, res){
+  res.render('register', {
+    title: 'Home'
+  });
+});
 
 module.exports = app;
