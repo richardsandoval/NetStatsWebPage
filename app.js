@@ -2,12 +2,13 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cons    = require('consolidate');
+var cons = require('consolidate');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./lib/routes/index');
+var routes = require('./lib/routes/login');
 var users = require('./lib/routes/users');
+var home = require('./lib/routes/home');
 
 var app = express();
 
@@ -24,9 +25,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, '/lib/public/vendor')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/home', home);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -34,6 +37,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
 
 // error handlers
 
@@ -59,5 +64,11 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+app.get('/pages/home', function(req, res){
+  res.render('home', {
+    title: 'Home'
+  });
+});
 
 module.exports = app;
