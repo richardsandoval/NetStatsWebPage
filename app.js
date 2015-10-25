@@ -38,7 +38,7 @@ app.use(expressSession({
 app.use(flash());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use('/static', express.static(path.join(__dirname, '/lib/public')));
+app.use('/static', express.static(path.join(__dirname, './lib/public/vendor')));
 
 app.get('/login', usersController.login);
 app.get('/login', usersController.processLogin());

@@ -11,11 +11,9 @@
 <body background="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-110699.jpg">
 
 <div class="login">
-
     <p></p>
 
     <div class="row">
-
         <!-- Columna de la Imagen -->
         <div class="col-md-8"></div>
 
@@ -27,28 +25,32 @@
                         <h2 style="align-content: center; font-family: sans-serif;"><b>Login</b></h2>
                     </div>
                     <!-- Parte del Formulario -->
-                    <form>
+                    <form id="pForm" action="/login" class="form-vertical login-form" method="post" role="form">
+                        {% if (message) %}
+                        <div class="alert alert-error">
+                            <button class="close" data-dismiss="alert"></button>
+                            <span>{{ message }}</span>
+                        </div>
+                        {% endif %}
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Email </label>
+                            <label>Username </label>
 
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                            <input type="text" name="user" class="form-control" id="user" placeholder="Username">
 
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
+                            <label>Password</label>
 
-                            <input type="password" class="form-control" id="exampleInputPassword1"
-                                   placeholder="Password">
+                            <input type="password" name="pwr" class="form-control" id="pwr" placeholder="Password">
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox"> Remember me
-                            </label>
+                                <input type="checkbox"> Remember me</label>
                         </div>
                         <!-- Linea para dividir los botones de los datos -->
                         <hr/>
 
-                        <a href="/home" button type="submit" class="btn btn-primary">Login</a>
+                        <input id="btnLogin"  runat="server" type="submit" class="btn blue pull-right" value="Ingresar">
                         <button type="button" class="btn btn-primary">Register</button>
 
                         <p><br/></p>
