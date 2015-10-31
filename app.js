@@ -17,7 +17,7 @@ var UserController = require('./lib/controller/users');
 var WSClient = require('./lib/wsclient');
 
 var wsClient = new WSClient({
-    uri: '10.0.0.3:8000/api/'
+    uri: 'http://localhost:8000/api/'
 });
 
 var usersController = new UserController(wsClient);
@@ -41,7 +41,7 @@ app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, './lib/public/vendor')));
 
 app.get('/login', usersController.login);
-app.get('/login', usersController.processLogin());
+app.post('/login', usersController.processLogin());
 
 app.get('*', usersController.login);
 
