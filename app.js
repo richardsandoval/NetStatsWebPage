@@ -9,6 +9,8 @@ var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('express-flash');
+var isAuthorized = require('./lib/middlewares/isauthorized.js');
+var isAuthorizedRedirect = require('./lib/middlewares/isauthorized.js');
 
 
 var app = express();
@@ -42,8 +44,9 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, './lib/public/vendor')));
 
-app.get('/', indexController.home());
+app.get('/', isAuthorized(), indexController.home());
 app.get('/login', usersController.login);
+app.get('/logout', usersController.logout());
 app.post('/login', usersController.processLogin());
 
 app.get('*', usersController.login);
