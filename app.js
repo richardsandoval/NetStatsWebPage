@@ -13,6 +13,7 @@ var flash = require('express-flash');
 
 var app = express();
 var UserController = require('./lib/controller/users');
+var IndexController = require('./lib/controller/home');
 
 var WSClient = require('./lib/wsclient');
 
@@ -21,6 +22,7 @@ var wsClient = new WSClient({
 });
 
 var usersController = new UserController(wsClient);
+var indexController = new IndexController(wsClient);
 
 app.engine('html', cons.swig);
 
@@ -40,6 +42,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/static', express.static(path.join(__dirname, './lib/public/vendor')));
 
+app.get('/', indexController.home());
 app.get('/login', usersController.login);
 app.post('/login', usersController.processLogin());
 
