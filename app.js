@@ -20,7 +20,7 @@ var IndexController = require('./lib/controller/home');
 var WSClient = require('./lib/wsclient');
 
 var wsClient = new WSClient({
-    uri: 'http://localhost:8000/api/'
+    uri: 'http://10.0.0.7:8000/api/'
 });
 
 var usersController = new UserController(wsClient);
