@@ -20,7 +20,7 @@ var IndexController = require('./lib/controller/home');
 var WSClient = require('./lib/wsclient');
 
 var wsClient = new WSClient({
-    uri: 'http://10.0.0.7:8000/api/'
+    uri: 'http://netstatspucmm.com:8000/api/'
 });
 
 var usersController = new UserController(wsClient);
@@ -33,7 +33,7 @@ app.set('views', path.join(__dirname, 'lib/views'));
 app.set('port', process.env.PORT || '3000');
 
 app.use(expressSession({
-    cookie: {maxAge: 60000},
+    cookie: {maxAge: 1800000},
     secret: 'netstatsProject',
     resave: false,
     saveUninitialized: false
