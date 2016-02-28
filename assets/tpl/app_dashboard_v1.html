@@ -1,0 +1,73 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="app.settings.asideFolded = false;app.settings.asideDock = false;"
+     ng-controller="FlotChartDemoCtrl">
+    <div>
+        <!-- main -->
+        <section>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bg-black dker wrapper-lg">
+                        <canvas id="line" class="chart chart-line" chart-data="data"
+                                chart-labels="labels" legend="false"
+                                chart-click="onClick">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading font-bold">Top 5 Protocols</div>
+                        <div class="panel-body" ng-init="topFive()">
+                            <canvas id="pie" class="chart chart-pie" chart-legend="true"
+                                    chart-data="pieData" chart-labels="pieLabel">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading font-bold">Top Destinations</div>
+                        <div class="panel-body" ng-init="topDest()">
+                            <canvas id="topDest" class="chart chart-doughnut" chart-data="topDestData"
+                                    chart-labels="topDestLabels" chart-legend="true"
+                                    chart-click="onClick">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading font-bold">Top Source</div>
+                        <div class="panel-body text-center" ng-init="topSrc()">
+                            <canvas id="topSource" class="chart chart-doughnut" chart-data="topSrcData"
+                                    chart-labels="topSrcLabels" chart-legend="true"
+                                    chart-click="onClick">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading font-bold">
+                            Last Analysis
+                        </div>
+                        <div class="panel-body text-center">
+                            <h4>
+                                <small>last</small>
+                                <time am-time-ago="time.ago"></time>
+                            </h4>
+                            <div class="inline">
+                            <span class="h2 m-l-sm step">
+                                <label>{{sizePacket}}</label>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
