@@ -25,8 +25,9 @@ module.exports = {
             required : true
         },
         sniffer : {
-            collection : 'data',
-            via : 'user'
+            collection : 'sniffer',
+            via : 'user',
+            protected : true
         }
     },
 

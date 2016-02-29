@@ -14,11 +14,6 @@ module.exports = {
         endDate: {
             type: 'datetime'
         },
-        sniffers: {
-            collection: 'sniffer',
-            via: 'data',
-            protected : true
-        },
         user: {
             model: 'user',
             protected : true

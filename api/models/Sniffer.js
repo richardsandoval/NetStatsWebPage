@@ -49,8 +49,8 @@ module.exports = {
             type: 'string',
             protected: true
         },
-        data: {
-            model: 'data',
+        user: {
+            model: 'user',
             protected: true
         }
     }
