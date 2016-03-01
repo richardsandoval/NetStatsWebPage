@@ -16,6 +16,7 @@ app.factory('signService', function ($http, $q) {
         $http.post('/api/v1/auth/signin', auth)
             .then(function (res) {
                 if (res) {
+                    console.log(res);
                     defered.resolve(res.data);
                 } else {
                     err.message = 'Email or Password not right';

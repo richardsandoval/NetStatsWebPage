@@ -20,9 +20,10 @@ app.controller('SigninFormController', ['$scope', '$state', '$sessionStorage', '
         };
         signService.signIn(auth)
             .then(function (response) {
+                console.log(' response ');
                 console.log(response);
-                $sessionStorage.data = response.data;
-                $state.go('app.dashboard-v1');
+                $sessionStorage = response.data;
+                $state.go('app.dashboard-v2');
             })
             .catch(function (err) {
                 console.log(err);
