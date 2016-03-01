@@ -44,6 +44,16 @@ angular.module('app')
                                 }]
                         }
                     })
+                    .state('app.analysis', {
+                        url: '/analysis',
+                        templateUrl: 'tpl/app_analysis.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function ($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                }]
+                        }
+                    })
                     .state('app.ui', {
                         url: '/ui',
                         template: '<div ui-view class="fade-in-up"></div>'
