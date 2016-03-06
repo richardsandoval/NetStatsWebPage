@@ -52,6 +52,9 @@ module.exports = {
         host: {
             type: 'string'
         },
+        interface : {
+            type : 'string'
+        },
         user: {
             model: 'user',
             protected: true

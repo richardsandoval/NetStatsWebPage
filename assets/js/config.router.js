@@ -40,6 +40,26 @@ angular.module('app')
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/chart.js', []]);
+                                }]
+                        }
+                    })
+                    .state('app.topten', {
+                        url: '/top',
+                        templateUrl: 'tpl/app_topten.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function ($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                }]
+                        }
+                    })
+                    .state('app.report', {
+                        url: '/report',
+                        templateUrl: 'tpl/app_report.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function ($ocLazyLoad) {
                                     return $ocLazyLoad.load(['js/controllers/chart.js']);
                                 }]
                         }

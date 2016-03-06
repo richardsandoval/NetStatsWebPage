@@ -32,6 +32,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
             ago: new Date()
         };
 
+        $scope.data = [300, 500, 100];
         //$scope.ago = new Date('2015/06/15');
 
         for (var i = 0; i < 20; ++i) {
@@ -222,8 +223,8 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
 
         $scope.topDestData = [[]];
         $scope.topDestLabels = [];
-        $scope.pieData = [];
-        $scope.pieLabel = [];
+        $scope.pieData = [10000, 20000, 29323,12933];
+        $scope.pieLabel = ['facebook.com', 'google.com', 'instagram.com', 'netstatspucmm.com'];
         $scope.labels = [];
         $scope.series = ['Bw/t'];
         $scope.data = [[]];
