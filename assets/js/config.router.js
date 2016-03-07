@@ -74,7 +74,27 @@ angular.module('app')
                                 }]
                         }
                     })
-                    .state('app.ui', {
+                    .state('app.contactus', {
+                        url: '/contactus',
+                        templateUrl: 'tpl/app_contactus.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function ($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                }]
+                        }
+                    })
+                            .state('app.aboutus', {
+                                url: '/aboutus',
+                                templateUrl: 'tpl/app_aboutus.html',
+                                resolve: {
+                                    deps: ['$ocLazyLoad',
+                                        function ($ocLazyLoad) {
+                                            return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                        }]
+                                }
+                            })
+                                    .state('app.ui', {
                         url: '/ui',
                         template: '<div ui-view class="fade-in-up"></div>'
                     })

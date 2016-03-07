@@ -6,9 +6,9 @@
     <div class="col">
         <div class="bg-black dker wrapper-lg" ng-controller="FlotChartDemoCtrl">
             <ul class="nav nav-pills nav-xxs nav-rounded m-b-lg">
-                <li class="active"><a href>Day</a></li>
+                <li class="active"><a href>Hour</a></li>
+                <li><a href ng-click="refreshData()">Day</a></li>
                 <li><a href ng-click="refreshData()">Week</a></li>
-                <li><a href ng-click="refreshData()">Month</a></li>
             </ul>
             <div ui-jq="plot" ui-refresh="d0_1" ui-options="
         [
@@ -44,6 +44,63 @@
                     <div>Data Usage<i class="fa fa-fw fa-caret-down text-danger text-sm"></i></div>
                     <div class="h2 m-b-sm">1.3Gb</div>
                 </div>
+
+                <div class="col-xs-6 col-md-4">
+                    <div>Map<i class="fa fa-fw fa-caret-down text-danger text-sm"></i></div>
+
+                    <div class="h3 m-b-sm"> Locations </div>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1625434.1763492518!2d-70.6028802777299!3d18.871661776412708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sdo!4v1457318557406" width="350" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+
+                    <div class="col-xs-6 col-md-4">
+                    <div>Tops<i class="fa fa-fw fa-caret-down text-danger text-sm"></i></div>
+                    <div class="h3 m-b-sm">Most used </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="label bg-danger pull-right m-t-xs">4 left</span>
+                                Tasks
+                            </div>
+                            <table class="table table-striped m-b-none">
+                                <thead>
+                                <tr>
+                                    <th>Progress</th>
+                                    <th>Item</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="progress progress-sm progress-striped active m-t-xs m-b-none">
+                                            <div class="progress-bar bg-success" data-toggle="tooltip" data-original-title="80%" style="width: 80%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Protocol - HTTP </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="progress progress-xs m-t-xs m-b-none">
+                                            <div class="progress-bar bg-info" data-toggle="tooltip" data-original-title="40%" style="width: 40%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Ip Destination - 192.168.25.16 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="progress progress-xs m-t-xs m-b-none">
+                                            <div class="progress-bar bg-warning" data-toggle="tooltip" data-original-title="20%" style="width: 20%"></div>
+                                        </div>
+                                    </td>
+                                    <td>Ip Source - 10.220.1.5</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
             </div>
         </div>
 
