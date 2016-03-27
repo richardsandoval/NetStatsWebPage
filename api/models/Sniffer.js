@@ -56,8 +56,7 @@ module.exports = {
             type : 'string'
         },
         user: {
-            model: 'user',
-            protected: true
+            model: 'user'
         }
     }
 };

@@ -20,12 +20,12 @@
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Top Host (%)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topHost()">
+                        <canvas id="pieHost" class="chart chart-pie" chart-legend="true"
+                                chart-data="hostData" chart-labels="hostLabel">
                         </canvas>
                     </div>
 
@@ -33,28 +33,29 @@
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Bandwidth over protocol (mb)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topProt()">
+                        <canvas id="pieProt" class="chart chart-bar" chart-legend="true"
+                                chart-data="protData" chart-labels="protLabel">
                         </canvas>
                     </div>
-
                 </div>
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Top Conversations (%)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topConv()">
+                        <canvas id="pieConv" class="chart chart-pie" chart-legend="true"
+                                chart-data="convData" chart-labels="convLabel">
                         </canvas>
                     </div>
+
                 </div>
+
             </div>
         </div>
         <div class="row" ng-controller="FlotChartDemoCtrl">

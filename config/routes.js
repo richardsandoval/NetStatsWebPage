@@ -46,10 +46,31 @@ module.exports.routes = {
         action: 'signin'
     },
 
-    'get /api/v1/sniffer/bwtime' : {
-        controller : 'SnifferController',
-        action : 'bwRange'
+    'get /api/v1/sniffer/bw/:criteria': {
+        controller: 'SnifferController',
+        action: 'bw'
+    },
+
+    'get /api/v1/sniffer/toppages': {
+        controller: 'SnifferController',
+        action: 'top10pages'
+    },
+
+    'get /api/v1/sniffer/topconv': {
+        controller: 'SnifferController',
+        action: 'topConversation'
+    },
+
+    'get /api/v1/sniffer/topprot': {
+        controller: 'SnifferController',
+        action: 'topProtocol'
+    },
+
+    'get /api/v1/sniffer/istcp': {
+        controller: 'SnifferController',
+        action: 'isTcp'
     }
+
     /***************************************************************************
      *                                                                          *
      * Custom routes here...                                                    *
