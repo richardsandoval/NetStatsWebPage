@@ -18,11 +18,11 @@ app.controller('SigninFormController', ['$scope', '$state', '$sessionStorage', '
             username: $scope.user.email,
             password: $scope.user.password
         };
+
         signService.signIn(auth)
             .then(function (response) {
-                console.log(' response ');
-                console.log(response);
-                $sessionStorage = response.data;
+                $sessionStorage.data = response.data;
+                $sessionStorage.token = response.data['token'];
                 $state.go('app.dashboard-v2');
             })
             .catch(function (err) {

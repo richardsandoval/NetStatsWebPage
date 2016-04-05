@@ -69,6 +69,21 @@ module.exports.routes = {
     'get /api/v1/sniffer/istcp': {
         controller: 'SnifferController',
         action: 'isTcp'
+    },
+
+    'get /api/v1/snifer/avg' : {
+        controller : 'SnifferController',
+        action : 'avg'
+    },
+
+    'get /api/v1/sniffer/maxtime' : {
+        controller : 'SnifferController',
+        action : 'maxtime'
+    },
+
+    'get /api/v1/sniffer/actualbw' : {
+        controller : 'SnifferController',
+        action : 'actualbw'
     }
 
     /***************************************************************************

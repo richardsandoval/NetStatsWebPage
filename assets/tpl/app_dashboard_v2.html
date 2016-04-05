@@ -1,48 +1,51 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
     app.settings.asideFolded = true;
-    app.settings.asideDock = true;
-  ">
+    app.settings.asideDock = true;" ng-controller="FlotChartDemoCtrl">
     <!-- main -->
     <div class="col">
-        <div class="bg-black dker wrapper-lg" ng-controller="FlotChartDemoCtrl">
+        <div class="bg-black dker wrapper-lg" data-ng-init="refreshData('minute')">
             <ul class="nav nav-pills nav-xxs nav-rounded m-b-lg">
-                <li><a href ng-click="refreshData()">Seconds</a></li>
-                <li><a href ng-click="refreshData()">Minutes</a></li>
-                <li><a href ng-click="refreshData()">hours</a></li>
+                <li><a href ng-click="refreshData('second')">Seconds</a></li>
+                <li><a href ng-click="refreshData('minute')">Minutes</a></li>
+                <li><a href ng-click="refreshData('hour')">hours</a></li>
             </ul>
-            <div ui-jq="plot" ui-refresh="d0_1" ui-options="
-        [
-          { data: {{d0_1}}, points: { show: true, radius: 2}, splines: { show: true, tension: 0.4, lineWidth: 1 } }
-        ],
-        {
-          colors: ['{{app.color.info}}', '{{app.color.primary}}'],
-          series: { shadowSize: 3 },
-          xaxis:{ font: { color: '#507b9b' } },
-          yaxis:{ font: { color: '#507b9b' }, max:16 },
-          grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#1c2b36' },
-          tooltip: true,
-          tooltipOpts: { content: 'Visits of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }
-        }
-      " style="min-height:360px">
-            </div>
+            <!--<div ui-jq="plot" ui-refresh="d0_1" ui-options="-->
+            <!--[-->
+            <!--{ data: {{d0_1}}, points: { show: true, radius: 2}, splines: { show: true, tension: 0.4, lineWidth: 1 } }-->
+            <!--],-->
+            <!--{-->
+            <!--colors: ['{{app.color.info}}', '{{app.color.primary}}'],-->
+            <!--series: { shadowSize: 3 },-->
+            <!--xaxis:{ font: { color: '#507b9b' } },-->
+            <!--yaxis:{ font: { color: '#507b9b' }, max:16 },-->
+            <!--grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#1c2b36' },-->
+            <!--tooltip: true,-->
+            <!--tooltipOpts: { content: 'Visits of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 10, y: -25 } }-->
+            <!--}-->
+            <!--" style="min-height:360px">-->
+            <!--</div>-->
+            <canvas id="line" class="chart chart-line" chart-data="data"
+                    chart-labels="label" chart-legend="true" chart-series="series"
+                    chart-click="onClick" chart-options="lineOpts">
+            </canvas>
         </div>
         <div class="wrapper-md bg-white-only b-b">
             <div class="row text-center">
                 <div class="col-sm-3 col-xs-6">
                     <div>Bandwidth Rate<i class="fa fa-fw fa-caret-up text-success text-sm"></i></div>
-                    <div class="h2 m-b-sm">5.12Gb/day</div>
+                    <div class="h2 m-b-sm">{{avg}}Kb/day</div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                     <div>Actual Bandwidth<i class="fa fa-fw fa-caret-down text-warning text-sm"></i></div>
-                    <div class="h2 m-b-sm">390Kb/s</div>
+                    <div class="h2 m-b-sm">{{actualbw}}Kb/s</div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                     <div>Time higher consumption<i class="fa fa-fw fa-caret-up text-success text-sm"></i></div>
-                    <div class="h2 m-b-sm">13:05:01</div>
+                    <div class="h2 m-b-sm">{{time}}</div>
                 </div>
                 <div class="col-sm-3 col-xs-6">
                     <div>Data Usage<i class="fa fa-fw fa-caret-down text-danger text-sm"></i></div>
-                    <div class="h2 m-b-sm">1.3Gb</div>
+                    <div class="h2 m-b-sm">{{total}}Kb</div>
                 </div>
             </div>
         </div>
@@ -56,7 +59,7 @@
             <div class="panel-body">
                 <div class="m-b-sm">
                     <label class="i-switch bg-info pull-right">
-                        <input type="checkbox" ng-model="app.settings.headerFixed">
+                        <input type="checkbox" ng-model="checkbox" ng-init="onInit()" ng-change="onChange()">
                         <i></i>
                     </label>
                     Analysis Status

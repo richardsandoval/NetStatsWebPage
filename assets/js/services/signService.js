@@ -16,17 +16,17 @@ app.factory('signService', function ($http, $q) {
         $http.post('/api/v1/auth/signin', auth)
             .then(function (res) {
                 if (res) {
-                    console.log(res);
+                    console.log(auth);
                     defered.resolve(res.data);
                 } else {
-                    err.message = 'Email or Password not right';
+                    err.message = 'User or Password incorrect';
                     defered.reject(err);
                 }
             }, function () {
                 err.message = 'Server Error';
                 defered.reject(err);
             });
-
+        console.log(promise);
         return promise;
     }
 

@@ -3,7 +3,10 @@
 /* Controllers */
 
 
-app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'homeService', function ($scope, $http, $sessionStorage, homeService) {
+app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'homeService', '$timeout', '$interval', function ($scope, $http, $sessionStorage, homeService, $timeout, $interval) {
+
+
+    $scope.lineOpts = {};
 
 
     $scope.byFilters = [
@@ -100,72 +103,176 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         });
     };
 
+    $scope.label = [];
+    $scope.data = [[]];
+    $scope.criteria = 'second';
+    $scope.avg = 0;
+    $scope.total = 0;
+    $scope.time = 0;
+    $scope.actualbw = 0;
 
-    $scope.refreshData = function (which, start, ends) {
+    $scope.refreshData = function (criteria) {
+        $scope.criteria = criteria;
+        $scope.data = [];
+        $scope.label = [];
 
-        //homeService.bw($sessionStorage, start, ends, which)
-        //    .then(function (data) {
-        //        $scope.data = [[]];
-        //        $scope.labels = [];
-        //        console.log(data);
-        //        //$scope.data.push(data.dataUse);
-        //        //$scope.labels = data.time;
-        //    })
-        //    .catch(function (err) {
-        //        console.log(err);
-        //    });
 
-        var k = 0;
-        result = [];
-        //console.log('criteria: ' + which + ' start: ' + start + ' ends: ' + ends);
-        $http.get(app.api + '/analysis/bw?uname=' + $sessionStorage.data.user + '&start=' + start + '&ends=' + ends + '&criteria=' + which, {
+        $http.get('/api/v1/sniffer/bw/' + $scope.criteria, {
             headers: {
-                Bearer: $sessionStorage.data.token,
-                uname: $sessionStorage.data.user
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
             }
         }).then(function (res) {
-            var labels = [];
-            var datas = [];
-            $scope.data = [[]];
-            var time = new Date(res.data.bw[res.data.bw.length - 1].time);
-            $scope.sizePacket = res.data.bw.length;
-            res.data.bw.forEach(function (data) {
-                //var arr = new Array(2);
-                //arr[1] = data.dataUse;
-                //arr[0] = k++;
-                time = new Date(data.time);
-                labels.push(time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds());
-                datas.push(data.dataUse);
+            var object = res.data['data'].body;
+            $scope.data.push(object.data);
+            $scope.label = (object.labels);
 
-                //result.push(arr);
-            });
-            //console.log(result);
-            $scope.data.push(sampling(datas));
-            $scope.time.ago.setDate(time.getDate());
-            $scope.labels = (sampling(labels));
-            //$scope.label = result[0];
-            //$scope.data = result[1];
-            //$scope.bw = result;
         }, function (err) {
-            console.log(err);
-            //$scope.bw = $scope.d0_1;
+            console.error(err);
         });
 
-//=======
-//            homeService.bw($sessionStorage, start, ends, which)
-//                .then(function (data) {
-//                    $scope.data = [[]];
-//                    $scope.labels = [];
-//                    console.log(data);
-//                    $scope.data.push(data.dataUse);
-//                    $scope.labels = data.time;
-//                })
-//                .catch(function (err) {
-//                    console.log(err);
-//                });
-//>>>>>>> 96559174277b08d27e5263332e5e513e77b06cd2
-//        };
+        $http.get('/api/v1/sniffer/avg', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then(function (res) {
+            var object = res.data['data'].body;
+            $scope.avg = object.avg;
+            $scope.total = object.sum;
+        }, function (err) {
+            console.error(err);
+        });
+
+        $http.get('/api/v1/sniffer/maxtime', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then(function (res) {
+            var object = res.data['data'].body;
+            $scope.time = new Date(object.max);
+        }, function (err) {
+            console.error(err);
+        });
+
+        $http.get('/api/v1/sniffer/actualbw', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then(function (res) {
+            var object = res.data['data'].body;
+
+            $scope.actualbw = object.totalbw;
+        }, function (err) {
+            console.error(err);
+        });
+
     };
+
+    $scope.checkbox = true;
+    $scope.id = 0;
+
+    $scope.onInit = function () {
+        $http.get('/api/v1/user?username=' + $sessionStorage.data.user, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then(function (res) {
+            var object = res.data['data'].body[0];
+            $scope.checkbox = object.status;
+            $scope.id = object.id;
+        }, function (err) {
+            console.error(err);
+        });
+    };
+
+    $scope.onChange = function () {
+        console.log('change');
+        $http.put('/api/v1/user/' + $scope.id,
+            {
+                status: $scope.checkbox
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'JWT ' + $sessionStorage.token
+                }
+            }
+        ).then(function (res) {
+
+        }, function (err) {
+            console.error(err);
+        });
+    };
+
+//     $scope.refreshData = function (which, start, ends) {
+//
+//         //homeService.bw($sessionStorage, start, ends, which)
+//         //    .then(function (data) {
+//         //        $scope.data = [[]];
+//         //        $scope.labels = [];
+//         //        console.log(data);
+//         //        //$scope.data.push(data.dataUse);
+//         //        //$scope.labels = data.time;
+//         //    })
+//         //    .catch(function (err) {
+//         //        console.log(err);
+//         //    });
+//
+//         var k = 0;
+//         result = [];
+//         //console.log('criteria: ' + which + ' start: ' + start + ' ends: ' + ends);
+//         $http.get(app.api + '/analysis/bw?uname=' + $sessionStorage.data.user + '&start=' + start + '&ends=' + ends + '&criteria=' + which, {
+//             headers: {
+//                 Bearer: $sessionStorage.data.token,
+//                 uname: $sessionStorage.data.user
+//             }
+//         }).then(function (res) {
+//             var labels = [];
+//             var datas = [];
+//             $scope.data = [[]];
+//             var time = new Date(res.data.bw[res.data.bw.length - 1].time);
+//             $scope.sizePacket = res.data.bw.length;
+//             res.data.bw.forEach(function (data) {
+//                 //var arr = new Array(2);
+//                 //arr[1] = data.dataUse;
+//                 //arr[0] = k++;
+//                 time = new Date(data.time);
+//                 labels.push(time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds());
+//                 datas.push(data.dataUse);
+//
+//                 //result.push(arr);
+//             });
+//             //console.log(result);
+//             $scope.data.push(sampling(datas));
+//             $scope.time.ago.setDate(time.getDate());
+//             $scope.labels = (sampling(labels));
+//             //$scope.label = result[0];
+//             //$scope.data = result[1];
+//             //$scope.bw = result;
+//         }, function (err) {
+//             console.log(err);
+//             //$scope.bw = $scope.d0_1;
+//         });
+//
+// //=======
+// //            homeService.bw($sessionStorage, start, ends, which)
+// //                .then(function (data) {
+// //                    $scope.data = [[]];
+// //                    $scope.labels = [];
+// //                    console.log(data);
+// //                    $scope.data.push(data.dataUse);
+// //                    $scope.labels = data.time;
+// //                })
+// //                .catch(function (err) {
+// //                    console.log(err);
+// //                });
+// //>>>>>>> 96559174277b08d27e5263332e5e513e77b06cd2
+// //        };
+//     };
 
     $scope.hostData = [];
     $scope.hostLabel = [];
@@ -178,8 +285,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         $http.get('/api/v1/sniffer/toppages', {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoicnNhbmRvdmFsQGdtYWlsLmNvbSIsImlhdCI6MTQ1NzU2OTMyMSwiZXhwIjoxNDg5MTA1MzIxLCJhdWQiOiJsb2NhbGhvc3QiLCJpc3MiOiJsb2NhbGhvc3QifQ.BepBhiBsVPFCjREu6JJp4l-rRtyMivnb9TihGLYmmSg',
-                username: 'rsandoval'
+                Authorization: 'JWT ' + $sessionStorage.token
             }
         }).then(function (res) {
             var object = res.data['data'].body;
@@ -194,8 +300,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         $http.get('/api/v1/sniffer/topconv', {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoicnNhbmRvdmFsQGdtYWlsLmNvbSIsImlhdCI6MTQ1NzU2OTMyMSwiZXhwIjoxNDg5MTA1MzIxLCJhdWQiOiJsb2NhbGhvc3QiLCJpc3MiOiJsb2NhbGhvc3QifQ.BepBhiBsVPFCjREu6JJp4l-rRtyMivnb9TihGLYmmSg',
-                username: 'rsandoval'
+                Authorization: 'JWT ' + $sessionStorage.token
             }
         }).then(function (res) {
             var object = res.data['data'].body;
@@ -210,12 +315,10 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         $http.get('/api/v1/sniffer/topprot', {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoicnNhbmRvdmFsQGdtYWlsLmNvbSIsImlhdCI6MTQ1NzU2OTMyMSwiZXhwIjoxNDg5MTA1MzIxLCJhdWQiOiJsb2NhbGhvc3QiLCJpc3MiOiJsb2NhbGhvc3QifQ.BepBhiBsVPFCjREu6JJp4l-rRtyMivnb9TihGLYmmSg',
-                username: 'rsandoval'
+                Authorization: 'JWT ' + $sessionStorage.token
             }
         }).then(function (res) {
             var object = res.data['data'].body;
-            console.log(object);
             $scope.protData.push(object.data);
             $scope.protLabel = object.labels;
         }, function (err) {
@@ -302,9 +405,9 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     $scope.topDestLabels = [];
     $scope.pieData = [10000, 20000, 29323, 12933];
     $scope.pieLabel = ['facebook.com', 'google.com', 'instagram.com', 'netstatspucmm.com'];
-    $scope.labels = [];
+    // $scope.labels = [];
     $scope.series = ['Bw/t'];
-    $scope.data = [[]];
+    // $scope.data = [[]];
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
@@ -339,4 +442,17 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     };
 
     $scope.d4 = $scope.getRandomData();
+
+    // $interval(function () {
+    //     $scope.refreshData($scope.criteria)
+    // }, 2000);
+    //
+    // $scope.callAtTimeout = function () {
+    //     console.log("$scope.callAtTimeout - Timeout occurred");
+    // };
+    //
+    // $timeout(function () {
+    //     $scope.lineOpts.animation = false;
+    // }, 800);
+
 }]);

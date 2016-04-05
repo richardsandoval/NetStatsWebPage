@@ -16,6 +16,7 @@ var passport = require('passport');
  * @private
  */
 function _onPassportAuth(req, res, error, user, info) {
+
     if (error) return res.serverError(error);
     if (!user) return res.unauthorized(null, info && info.code, info && info.message);
 
@@ -25,7 +26,7 @@ function _onPassportAuth(req, res, error, user, info) {
         data: {
             code: '00',
             status: true,
-            message : 'Sign In Correctly',
+            message: 'Sign In Correctly',
             token: CipherService.createToken(user),
             body: user
         }
@@ -58,6 +59,7 @@ module.exports = {
     },
 
     signin: function (req, res) {
+
         passport.authenticate('local',
             _onPassportAuth.bind(this, req, res))(req, res);
     }
