@@ -124,6 +124,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
             }
         }).then(function (res) {
             var object = res.data['data'].body;
+
             $scope.data.push(object.data);
             $scope.label = (object.labels);
 
@@ -151,7 +152,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
             }
         }).then(function (res) {
             var object = res.data['data'].body;
-            $scope.time = new Date(object.max);
+            // $scope.time = new Date(object.max);
         }, function (err) {
             console.error(err);
         });
@@ -173,7 +174,6 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
 
     $scope.checkbox = true;
     $scope.id = 0;
-
     $scope.onInit = function () {
         $http.get('/api/v1/user?username=' + $sessionStorage.data.user, {
             headers: {
@@ -189,6 +189,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         });
     };
 
+    $scope.lastId = 0;
     $scope.onChange = function () {
         console.log('change');
         $http.put('/api/v1/user/' + $scope.id,
@@ -206,6 +207,40 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         }, function (err) {
             console.error(err);
         });
+        if ($scope.checkbox)
+            $http.post('/api/v1/data', {
+                    user: $sessionStorage.data.user,
+                    startDate: (new Date()).getMilliseconds()
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'JWT ' + $sessionStorage.token
+                    }
+                }
+            ).then((res) => {
+                $scope.lastId = res.data['data'].id;
+                console.log($scope.lastId);
+            }, (err) => {
+                console.error(err);
+            });
+        else
+            $http.put('/api/v1/data/' + $scope.lastId,
+                {
+                    endDate: (new Date()).getMilliseconds()
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'JWT ' + $sessionStorage.token
+                    }
+                }
+            ).then((res)=> {
+
+            }, (err) => {
+                console.error(err);
+            });
+
+
     };
 
 //     $scope.refreshData = function (which, start, ends) {
@@ -443,16 +478,16 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
 
     $scope.d4 = $scope.getRandomData();
 
-    // $interval(function () {
-    //     $scope.refreshData($scope.criteria)
-    // }, 2000);
-    //
-    // $scope.callAtTimeout = function () {
-    //     console.log("$scope.callAtTimeout - Timeout occurred");
-    // };
-    //
-    // $timeout(function () {
-    //     $scope.lineOpts.animation = false;
-    // }, 800);
+    $interval(function () {
+        $scope.refreshData($scope.criteria)
+    }, 2000);
+
+    $scope.callAtTimeout = function () {
+        console.log("$scope.callAtTimeout - Timeout occurred");
+    };
+
+    $timeout(function () {
+        $scope.lineOpts.animation = false;
+    }, 800);
 
 }]);

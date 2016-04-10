@@ -23,7 +23,6 @@ module.exports = {
             LIMIT 60) n
             ORDER BY  date 
             `;
-
         Sniffer.query(query, (err, result) => {
             if (err)
                 return res.serverError(err);
@@ -200,7 +199,7 @@ module.exports = {
     },
 
 
-    maxtime : function(req, res){
+    maxtime: function (req, res) {
         let username = req.user;
 
         let query = `select totalbw, MAX(date) from (SELECT date_trunc('minute', s."createdAt") as date, 
@@ -223,7 +222,7 @@ module.exports = {
         });
     },
 
-    actualbw : function (req, res) {
+    actualbw: function (req, res) {
         let username = req.user;
         let query = `select avg(totalbw)::INT as totalbw,
           MAX(date) FROM (SELECT date_trunc('minute', s."createdAt") as date, 
