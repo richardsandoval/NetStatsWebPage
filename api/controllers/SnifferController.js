@@ -35,7 +35,7 @@ module.exports = {
 
             for (let data of result.rows) {
                 response.data.push(data.totalbw);
-                response.labels.push(data.date);
+                response.labels.push(sails.moment(data.date).format('HH:mm:ss'));
             }
             //
             // for (let data of result.rows) {
