@@ -84,6 +84,23 @@ module.exports.routes = {
     'get /api/v1/sniffer/actualbw' : {
         controller : 'SnifferController',
         action : 'actualbw'
+    },
+
+    'get /api/v1/sniffer/topsip' : {
+        controller : 'SnifferController',
+        action: 'topSIP'
+    },
+
+
+    'get /api/v1/sniffer/topdip' : {
+        controller : 'SnifferController',
+        action: 'topDIP'
+    },
+
+
+    'get /api/v1/sniffer/topmac' : {
+        controller : 'SnifferController',
+        action: 'topMAC'
     }
 
     /***************************************************************************

@@ -76,9 +76,9 @@ module.exports.connections = {
   ***************************************************************************/
   postgresServer: {
     adapter: 'sails-postgresql',
-    host: 'localhost',
-    user: 'postgres',
-    password: 'erick1993',
+    host: 'netstats-db.cbgrtixentmz.us-east-1.rds.amazonaws.com',//'localhost',
+    user: 'administrator',//'postgres',
+    password: 'administrator',//'erick1993',
     database: 'netstats'
   }
 

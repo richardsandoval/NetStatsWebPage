@@ -3,18 +3,18 @@
     app.settings.asideDock = true;"
 >
     <section class="bg-black dk bg-auto wrapper-lg">
-        <div class="wrapper-md">
-            <div class="panel panel-default">
-                <div class="panel-heading font-bold">
-                    Elapse Time
-                </div>
-                <div class="panel-body ">
-                    <form role="form">
+        <!--<div class="wrapper-md">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading font-bold">-->
+                    <!--Elapse Time-->
+                <!--</div>-->
+                <!--<div class="panel-body ">-->
+                    <!--<form role="form">-->
 
-                    </form>
-                </div>
-            </div>
-        </div>
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="row" ng-controller="FlotChartDemoCtrl">
             <div class="wrapper-md">
                 <div class="col-lg-4">
@@ -63,12 +63,12 @@
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Top Source IP (Kb/s)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topSIP()">
+                        <canvas id="pieSIP" class="chart chart-pie" chart-legend="true"
+                                chart-data="SIPData" chart-labels="SIPLabel">
                         </canvas>
                     </div>
 
@@ -76,12 +76,12 @@
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Top Destination IP (Kb/s)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topDIP()">
+                        <canvas id="pieDIP" class="chart chart-pie" chart-legend="true"
+                                chart-data="DIPData" chart-labels="DIPLabel">
                         </canvas>
                     </div>
 
@@ -89,12 +89,12 @@
                 <div class="col-lg-4">
                     <div>
                         <h3 class="font-bold" align="center">
-                            Top 10 Conversations (mb/s)
+                            Top MAC (Kb/s)
                         </h3>
                     </div>
-                    <div class="panel-body" ng-init="pieData">
-                        <canvas id="pie" class="chart chart-pie" chart-legend="true"
-                                chart-data="pieData" chart-labels="pieLabel">
+                    <div class="panel-body" ng-init="topMAC()">
+                        <canvas id="pieMAC" class="chart chart-pie" chart-legend="true"
+                                chart-data="MACData" chart-labels="MACLabel">
                         </canvas>
                     </div>
                 </div>

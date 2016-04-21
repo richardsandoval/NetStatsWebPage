@@ -27,6 +27,7 @@ app.controller('SigninFormController', ['$scope', '$state', '$sessionStorage', '
             })
             .catch(function (err) {
                 console.log(err);
+                console.log('toy alla');
                 $scope.authError = err.message;
             });
 

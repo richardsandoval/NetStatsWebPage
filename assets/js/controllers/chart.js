@@ -207,10 +207,15 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         }, function (err) {
             console.error(err);
         });
-        if ($scope.checkbox)
+
+        if ($scope.checkbox) {
+            console.log({
+                user: $scope.id,
+                startDate: new Date()
+            });
             $http.post('/api/v1/data', {
-                    user: $sessionStorage.data.user,
-                    startDate: (new Date()).getMilliseconds()
+                    user: $scope.id,
+                    startDate: new Date()
                 }, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -218,15 +223,17 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
                     }
                 }
             ).then((res) => {
-                $scope.lastId = res.data['data'].id;
+
+                $scope.lastId = res.data['data'].body.id;
                 console.log($scope.lastId);
             }, (err) => {
                 console.error(err);
             });
+        }
         else
             $http.put('/api/v1/data/' + $scope.lastId,
                 {
-                    endDate: (new Date()).getMilliseconds()
+                    endDate: new Date()
                 },
                 {
                     headers: {
@@ -242,6 +249,8 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
 
 
     };
+
+    $scope.informationData = [];
 
 //     $scope.refreshData = function (which, start, ends) {
 //
@@ -315,6 +324,12 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     $scope.convLabel = [];
     $scope.protData = [];
     $scope.protLabel = [];
+    $scope.SIPLabel = [];
+    $scope.SIPData = [];
+    $scope.DIPLabel = [];
+    $scope.DIPData = [];
+    $scope.MACLabel = [];
+    $scope.MACData = [];
 
     $scope.topHost = function () {
         $http.get('/api/v1/sniffer/toppages', {
@@ -360,6 +375,59 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
             console.error(err);
         })
     };
+
+
+    $scope.topSIP = () => {
+        console.log('here');
+        $http.get('/api/v1/sniffer/topsip', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then((res)=> {
+            console.log(res);
+            var object = res.data['data'].body;
+            $scope.SIPData = object.data;
+            $scope.SIPLabel = object.labels;
+        }, (err)=> {
+            console.error(err);
+        });
+    };
+
+    $scope.topDIP = () => {
+        console.log('here');
+        $http.get('/api/v1/sniffer/topdip', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then((res)=> {
+            console.log(res);
+            var object = res.data['data'].body;
+            $scope.DIPData = object.data;
+            $scope.DIPLabel = object.labels;
+        }, (err)=> {
+            console.error(err);
+        });
+    };
+
+    $scope.topMAC = () => {
+        console.log('here');
+        $http.get('/api/v1/sniffer/topmac', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'JWT ' + $sessionStorage.token
+            }
+        }).then((res)=> {
+            console.log(res);
+            var object = res.data['data'].body;
+            $scope.MACData = object.data;
+            $scope.MACLabel = object.labels;
+        }, (err)=> {
+            console.error(err);
+        });
+    };
+
 
     $scope.topFive = function () {
         $http.get('/api/analysis/rank?uname=' + $sessionStorage.data.user + '&start=' + (new Date() - 1) + '&ends=' + (new Date() + 1 ) + '&criteria=protocol', {
@@ -479,7 +547,21 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     $scope.d4 = $scope.getRandomData();
 
     $interval(function () {
-        $scope.refreshData($scope.criteria)
+        $scope.refreshData($scope.criteria);
+        $scope.refreshInformation = function () {
+            $http.get('/api/v1/data?user=' + $scope.id, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'JWT ' + $sessionStorage.token
+                    }
+                }
+            ).then((res)=> {
+                $scope.informationData = res.data['data'].body;
+            }, (err)=> {
+                console.log(err);
+            });
+        };
+        $scope.refreshInformation();
     }, 2000);
 
     $scope.callAtTimeout = function () {

@@ -15,8 +15,7 @@ module.exports = {
             type: 'datetime'
         },
         user: {
-            model: 'user',
-            protected : true
+            model: 'user'
         }
     }
 };

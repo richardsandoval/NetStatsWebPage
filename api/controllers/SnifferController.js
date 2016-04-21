@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-
+"use strict";
 module.exports = {
 
     bw: (req, res) => {
@@ -56,11 +56,11 @@ module.exports = {
             FROM sniffer s 
             INNER JOIN "user" u 
             on s."user" = u.id 
-            WHERE u.username = '${username}' AND s.sip NOT LIKE  '127.%' 
+            WHERE u.username = '${username}' AND s.sip NOT LIKE  '127.%' AND s.sip NOT LIKE '192.168.%'
             AND s.host IS NOT NULL 
             GROUP BY s."user", s.host 
             ORDER BY COUNT(host) DESC 
-            LIMIT 10`;
+            LIMIT 5`;
 
         Sniffer.query(query, (err, result) => {
 
@@ -95,7 +95,7 @@ module.exports = {
             WHERE s.dip <> s.sip AND s.dip NOT LIKE '127.%' AND s.sip NOT LIKE '127.%' AND u.username = '${username}' 
             GROUP BY s."user", s.dip, s.sip 
             ORDER BY percent DESC 
-            LIMIT 10`;
+            LIMIT 5`;
 
         Sniffer.query(query, (err, result) => {
 
@@ -126,7 +126,7 @@ module.exports = {
              WHERE s.stcp < 1024 AND u.username = '${username}'
              GROUP BY s.stcp
              ORDER BY sum(length) DESC
-             LIMIT 10`;
+             LIMIT 5`;
 
         Sniffer.query(query, (err, result) => {
             if (err)
@@ -241,6 +241,93 @@ module.exports = {
                 return res.serverError(err);
 
             return res.ok(result.rows[0]);
+        });
+    },
+
+    topSIP: (req, res) => {
+        let username = req.user;
+        let query = `select u.username , sip, sum(length)/1000 as sum 
+          from sniffer s
+          inner join  "user" u
+          on s."user" = u.id
+          where sip not like '127.%' and u.username = '${username}'
+          group by sip, u.username
+          order by sum desc
+          limit 5`;
+
+        Sniffer.query(query, (err, result)=> {
+            if (err)
+                return res.serverError(err);
+
+            let response = {
+                labels: [],
+                data: []
+            };
+
+            for (let data of result.rows) {
+                response.labels.push(data.sip);
+                response.data.push(data.sum);
+            }
+
+            return res.ok(response);
+        });
+    },
+
+    topDIP: (req, res) => {
+        let username = req.user;
+        let query = `select u.username , dip, sum(length)/1000 as sum 
+          from sniffer s
+          inner join  "user" u
+          on s."user" = u.id
+          where dip not like '127.%' and u.username = '${username}'
+          group by dip, u.username
+          order by sum desc
+          limit 5`;
+
+        Sniffer.query(query, (err, result)=> {
+            if (err)
+                return res.serverError(err);
+
+            let response = {
+                labels: [],
+                data: []
+            };
+
+            for (let data of result.rows) {
+                response.labels.push(data.dip);
+                response.data.push(data.sum);
+            }
+
+            return res.ok(response);
+        });
+    },
+
+    topMAC: (req, res) => {
+        let username = req.user;
+        let query = `select u.username , dmac, sum(length)/1000 as sum 
+          from sniffer s
+          inner join  "user" u
+          on s."user" = u.id
+          where dmac not like '00:00:00:00:00:00%' and dmac not like 'ff:ff:ff:ff:ff:ff%' and u.username = '${username}'
+          group by dmac, u.username
+          order by sum desc
+          limit 5`;
+
+        Sniffer.query(query, (err, result)=> {
+            if (err)
+                return res.serverError(err);
+
+            let response = {
+                labels: [],
+                data: []
+            };
+
+            for (let data of result.rows) {
+                response.labels.push(data.dmac);
+                response.data.push(data.sum);
+            }
+
+            return res.ok(response);
         });
     }
 

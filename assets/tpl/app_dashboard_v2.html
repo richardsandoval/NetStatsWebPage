@@ -66,15 +66,15 @@
                 </div>
             </div>
             <ul class="list-group no-bg no-borders pull-in">
-                <div ng-repeat="n in ['20150201T220101','20150202T220101','20150203T220101', '20150204T220101']">
+                <div ng-repeat="n in informationData">
                     <li class="list-group-item">
                         <a herf class="pull-left thumb-sm avatar m-r">
                             <img src="img/a4.jpg" alt="..." class="img-circle">
                             <i class="on b-white bottom"></i>
                         </a>
                         <div class="clear">
-                            <div><a href>Richard Sandoval</a></div>
-                            <small class="text-muted">{{n}}</small>
+                            <div><a href>{{n.user['username']}}</a></div>
+                            <small class="text-muted">{{n.createdAt}} - {{n.updatedAt}}</small>
                         </div>
                     </li>
                 </div>

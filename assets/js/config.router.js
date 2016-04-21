@@ -70,7 +70,7 @@ angular.module('app')
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                    return $ocLazyLoad.load(['js/controllers/analysis.js']);
                                 }]
                         }
                     })
