@@ -359,7 +359,7 @@ module.exports = {
             q = '';
 
 
-        let query = `SELECT (SUM(s.length)/1000) as totalbw  
+        let query = `SELECT (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) as totalbw  
             FROM sniffer s 
             INNER JOIN "user" u 
             ON u.id = s."user" 
@@ -406,7 +406,7 @@ module.exports = {
             q = '';
 
 
-        let query = `SELECT DISTINCT s.dip , (SUM(s.length)/1000) as totalbw  
+        let query = `SELECT DISTINCT s.dip , (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) as totalbw  
             FROM sniffer s
             INNER JOIN "user" u 
             ON u.id = s."user" 
@@ -414,7 +414,7 @@ module.exports = {
             ${q2} AND s.dip not like '127.%'
             AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
             GROUP BY s.dip
-            ORDER BY (SUM(s.length)/1000) DESC
+            ORDER BY (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) DESC
             LIMIT 5`;
 
         Sniffer.query(query, (err, result) => {
@@ -452,7 +452,7 @@ module.exports = {
             q = '';
 
 
-        let query = `SELECT DISTINCT s.sip , (SUM(s.length)/1000) as totalbw  
+        let query = `SELECT DISTINCT s.sip , (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) as totalbw  
             FROM sniffer s
             INNER JOIN "user" u 
             ON u.id = s."user" 
@@ -460,7 +460,7 @@ module.exports = {
             ${q2} AND s.sip not like '127.%'
             AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
             GROUP BY s.sip
-            ORDER BY (SUM(s.length)/1000) DESC
+            ORDER BY (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) DESC
             LIMIT 5`;
 
 
@@ -547,7 +547,7 @@ module.exports = {
             q = '';
 
 
-        let query = `SELECT DISTINCT s.stcp , (SUM(s.length)/1000) as totalbw  
+        let query = `SELECT DISTINCT s.stcp , (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) as totalbw  
             FROM sniffer s
             INNER JOIN "user" u 
             ON u.id = s."user" 
@@ -555,7 +555,7 @@ module.exports = {
             ${q2} AND s.stcp is not null and s.stcp < 1024
             AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
             GROUP BY s.stcp
-            ORDER BY (SUM(s.length)/1000) DESC
+            ORDER BY (SUM(s.length)::NUMERIC(18,2)/10000)::NUMERIC(18,2) DESC
             LIMIT 5`;
 
         Sniffer.query(query, (err, result) => {
