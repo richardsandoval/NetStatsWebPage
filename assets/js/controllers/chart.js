@@ -175,13 +175,15 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     $scope.checkbox = true;
     $scope.id = 0;
     $scope.onInit = function () {
-        $http.get('/api/v1/user?username=' + $sessionStorage.data.user, {
+        console.log($sessionStorage.data['body'].username);
+        $http.get('/api/v1/user?username=' + $sessionStorage.data['body'].username, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'JWT ' + $sessionStorage.token
             }
         }).then(function (res) {
             var object = res.data['data'].body[0];
+            console.log(object);
             $scope.checkbox = object.status;
             $scope.id = object.id;
         }, function (err) {
@@ -573,6 +575,6 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
     }, 800);
 
 
-    
+
 
 }]);
