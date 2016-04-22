@@ -329,6 +329,295 @@ module.exports = {
 
             return res.ok(response);
         });
+    },
+
+    analysisBw: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT (SUM(s.length)/1000) as totalbw  
+            FROM sniffer s 
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2}
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            ${q}`;
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            return res.ok(result.rows[0]);
+        });
+
+
+    },
+
+
+    topIPDest: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT DISTINCT s.dip , (SUM(s.length)/1000) as totalbw  
+            FROM sniffer s
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2} AND s.dip not like '127.%'
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            GROUP BY s.dip
+            ORDER BY (SUM(s.length)/1000) DESC
+            LIMIT 5`;
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            return res.ok(result.rows);
+        });
+    },
+
+    topIPRep: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT DISTINCT s.sip , (SUM(s.length)/1000) as totalbw  
+            FROM sniffer s
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2} AND s.sip not like '127.%'
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            GROUP BY s.sip
+            ORDER BY (SUM(s.length)/1000) DESC
+            LIMIT 5`;
+
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            return res.ok(result.rows);
+        });
+    },
+
+    tophost: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT DISTINCT s.host , COUNT(s.host) as total  
+            FROM sniffer s
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2} AND s.host not like '%local%' and s.host not like '%rsandoval%'
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            GROUP BY s.host
+            ORDER BY COUNT(s.host) DESC
+            LIMIT 5`;
+
+        console.log(query);
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            return res.ok(result.rows);
+        });
+    },
+
+    topservice: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT DISTINCT s.stcp , (SUM(s.length)/1000) as totalbw  
+            FROM sniffer s
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2} AND s.stcp is not null and s.stcp < 1024
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            GROUP BY s.stcp
+            ORDER BY (SUM(s.length)/1000) DESC
+            LIMIT 5`;
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            console.log(result.rows);
+            return res.ok(result.rows);
+        });
+    },
+
+    bwconsumed: (req, res) => {
+        let username = req.user;
+        let model = req.allParams();
+
+        /**
+         * {
+            sourceIp: $scope.sourceIp,
+            destIP: $scope.destIP,
+            sourcePost: $scope.sourcePost,
+            destPort: $scope.destPort,
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        }
+         **/
+        let q = 'GROUP BY ', q2 = '';
+
+        Object.keys(model).map((key) => {
+            if (key !== 'startDate' && key != 'endDate') {
+                q += ` s.${key}, `;
+                q2 += ` AND s.${key} = '${model[key]}'`;
+            }
+        });
+        if (q != 'GROUP BY ')
+            q = q.substring(0, q.length - 2);
+        else
+            q = '';
+
+
+        let query = `SELECT DISTINCT s.istcp ,
+            ((SUM(s.length))::NUMERIC(18,2)*100 /(select SUM(length) from sniffer)::NUMERIC(18,2))::NUMERIC(18,2) as total
+            FROM sniffer s
+            INNER JOIN "user" u 
+            ON u.id = s."user" 
+            WHERE u.username = '${username}'
+            ${q2} 
+            AND s."createdAt" BETWEEN '${model.startDate}' AND '${model.endDate}'
+            GROUP BY s.istcp
+            ORDER BY s.istcp DESC
+            LIMIT 5`;
+
+        console.log(query);
+
+        Sniffer.query(query, (err, result) => {
+            if (err)
+                return res.serverError(err);
+            //
+            // let sum = result.rows[0].total;
+            //
+            // let isTCPTotal = result.rows[0].totalbw/sum;
+
+            return res.ok(result.rows[0]);
+        });
     }
 
 };

@@ -1,57 +1,68 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-init="
     app.settings.asideFolded = true;
     app.settings.asideDock = true;"
-     ng-controller="AnalysisController"
+     ng-controller="FormDemoCtrl"
 >
     <!-- form -->
-    <section class="bg-black dk bg-auto  wrapper-lg">
-        <div class="wrapper-md" ng-controller="FormDemoCtrl">
+    <section class="bg-black dk bg-auto wrapper-lg">
+        <div class="wrapper-md">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="panel panel-default">
                         <div class="panel-heading font-bold">Analysis</div>
                         <div class="panel-body ">
-                            <form role="form">
-                                <div class="col-sm-3">
-                                    <div class="form-group">
-                                        <label>Protocol</label>
-                                        <input type="text" class="form-control" placeholder="Protocol">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Port</label>
-                                        <input type="text" class="form-control" placeholder="Host">
-                                    </div>
-                                </div>
-                                <div class="col-sm-3">
+                            <form role="form" ng-submit="submit()">
+                                <!--<div class="col-sm-3">-->
+                                <!--<div class="form-group">-->
+                                <!--<label>Source Mac address</label>-->
+                                <!--<input type="text" class="form-control" placeholder="Source MAC"-->
+                                <!--ng-model="ssmac">-->
+                                <!--</div>-->
+                                <!--<div class="form-group">-->
+                                <!--<label>Destination Mac address </label>-->
+                                <!--<input type="text" class="form-control" placeholder="Destination MAC"-->
+                                <!--ng-model="ddmac">-->
+                                <!--</div>-->
+                                <!--</div>-->
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Source IP</label>
-                                        <input type="text" class="form-control" placeholder="Source IP">
+                                        <input type="text" class="form-control" placeholder="Source IP"
+                                               ng-model="sourceIp">
                                     </div>
                                     <div class="form-group">
                                         <label>Destination IP</label>
-                                        <input type="text" class="form-control" placeholder="Destination IP">
+                                        <input type="text" class="form-control" placeholder="Destination IP"
+                                               ng-model="destIP">
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Source Port</label>
-                                        <input type="text" class="form-control" placeholder="Source Port">
+                                        <input type="text" class="form-control" placeholder="Source Port"
+                                               ng-model="sPort">
                                     </div>
                                     <div class="form-group">
                                         <label>Destination Port</label>
-                                        <input type="text" class="form-control" placeholder="Destination Port">
+                                        <input type="text" class="form-control" placeholder="Destination Port"
+                                               ng-model="destPort">
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>Start Date</label>
-                                        <input type="date" class="form-control" placeholder="Start Date" ng-model="startDate" value="{{startDate}}">
+                                        <input type="date" class="form-control" placeholder="Start Date"
+
+                                               ng-model="startDate">
                                     </div>
                                     <div class="form-group">
                                         <label>End Date</label>
-                                        <input type="date" class="form-control" placeholder="End Date" ng-model="endDate" value="{{startDate}}">
+                                        <input type="date" class="form-control" placeholder="End Date"
+                                               ng-model="endDate">
                                     </div>
-                                    <button type="submit" class="btn btn-sm btn-primary pull-right">Find</button>
+                                    <input type="submit" class="btn btn-sm btn-primary pull-right" id="submit"
+                                           value="Find"/>
+                                    <!--<button type="submit" class="btn btn-sm btn-primary pull-right">Find</button>-->
                                 </div>
                             </form>
                         </div>
@@ -59,81 +70,101 @@
                 </div>
             </div>
         </div>
-        <div class="wrapper-md" ng-controller="FormDemoCtrl">
-            <div class="row">
-                <div class="col-sm-12">
-
-                </div>
-            </div>
-        </div>
     </section>
 
-    <div class="col w-md bg-black dk bg-auto">
-        <div class="wrapper">
-            <div class="m-b-sm text-md">Analysis</div>
+    <section class="bg-black dk bg-auto wrapper-lg">
+
+        <div class="wrapper-md">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">Bandwidth Consumed</h2>
+                        </div>
+                        <div class="wrapper-md bg-white-only b-b">
+                            <div class="h2 m-b-sm">
+                                <h2 style="text-align: center;">{{totalbw}} Kb</h2>
+                                <h2 style="text-align: center;">_</h2>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">Top Service</h2>
+                        </div>
+                        <div class="wrapper-md bg-white-only b-b">
+                            <div ng-repeat="ip in topservice ">
+                                <div class="h2 m-b-sm">
+                                    <h2 style="text-align: center;">PORT : {{ip.stcp}} - {{ip.totalbw}} Kb</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">UDP vs TCP</h2>
+                        </div>
+                        <div class=" wrapper-md bg-white-only b-b">
+                            <div class="h2 m-b-sm">
+                                <h2 style="text-align: center;">TCP - {{por}}% </h2>
+                                <h2 style="text-align: center;">UDP - {{100 - por}}%</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">Top Host</h2>
+                        </div>
+                        <div class="wrapper-md bg-white-only b-b">
+                            <div ng-repeat="ip in tophosts ">
+                                <div class="h2 m-b-sm">
+                                    <h3 style="text-align: center;">{{ip.host}} - {{ip.total}} Request</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">Top IP Destination</h2>
+                        </div>
+                        <div class="wrapper-md bg-white-only b-b">
+                            <div ng-repeat="ip in topips ">
+                                <div class="h2 m-b-sm">
+                                    <h3 style="text-align: center;">{{ip.dip}} - {{ip.totalbw}} Kb</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h2 style="text-align: center;">Top IP Replied</h2>
+                        </div>
+                        <div class="wrapper-md bg-white-only b-b">
+                            <div ng-repeat="ip in topipsreps ">
+                                <div class="h2 m-b-sm">
+                                    <h3 style="text-align: center;">{{ip.sip}} - {{ip.totalbw}} Kb</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <ul class="list-group no-bg no-borders pull-in">
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-            <li class="list-group-item">
-                <a herf class="pull-left thumb-sm avatar m-r">
-                    <img src="img/a4.jpg" alt="..." class="img-circle">
-                    <i class="on b-white bottom"></i>
-                </a>
-                <div class="clear">
-                    <div><a href>Bandwidth</a></div>
-                    <small class="text-muted">{{n}}</small>
-                </div>
-            </li>
-        </ul>
-    </div>
+
+    </section>
 
 </div>

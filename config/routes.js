@@ -71,36 +71,66 @@ module.exports.routes = {
         action: 'isTcp'
     },
 
-    'get /api/v1/snifer/avg' : {
-        controller : 'SnifferController',
-        action : 'avg'
+    'get /api/v1/snifer/avg': {
+        controller: 'SnifferController',
+        action: 'avg'
     },
 
-    'get /api/v1/sniffer/maxtime' : {
-        controller : 'SnifferController',
-        action : 'maxtime'
+    'get /api/v1/sniffer/maxtime': {
+        controller: 'SnifferController',
+        action: 'maxtime'
     },
 
-    'get /api/v1/sniffer/actualbw' : {
-        controller : 'SnifferController',
-        action : 'actualbw'
+    'get /api/v1/sniffer/actualbw': {
+        controller: 'SnifferController',
+        action: 'actualbw'
     },
 
-    'get /api/v1/sniffer/topsip' : {
-        controller : 'SnifferController',
+    'get /api/v1/sniffer/topsip': {
+        controller: 'SnifferController',
         action: 'topSIP'
     },
 
 
-    'get /api/v1/sniffer/topdip' : {
-        controller : 'SnifferController',
+    'get /api/v1/sniffer/topdip': {
+        controller: 'SnifferController',
         action: 'topDIP'
     },
 
 
-    'get /api/v1/sniffer/topmac' : {
-        controller : 'SnifferController',
+    'get /api/v1/sniffer/topmac': {
+        controller: 'SnifferController',
         action: 'topMAC'
+    },
+
+    'post /api/v1/sniffer/analysisBw': {
+        controller: 'SnifferController',
+        action: 'analysisBw'
+    },
+
+    'post /api/v1/sniffer/topipdest': {
+        controller: 'SnifferController',
+        action: 'topIPDest'
+    },
+
+    'post /api/v1/sniffer/topiprep': {
+        controller: 'SnifferController',
+        action: 'topIPRep'
+    },
+
+    'post /api/v1/sniffer/tophost': {
+        controller: 'SnifferController',
+        action: 'tophost'
+    },
+
+    'post /api/v1/sniffer/topservice': {
+        controller: 'SnifferController',
+        action: 'topservice'
+    },
+
+    'post /api/v1/sniffer/bwconsumed': {
+        controller: 'SnifferController',
+        action: 'bwconsumed'
     }
 
     /***************************************************************************

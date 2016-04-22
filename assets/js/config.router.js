@@ -60,7 +60,7 @@ angular.module('app')
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/chart.js']);
+                                    return $ocLazyLoad.load(['js/controllers/form.js']);
                                 }]
                         }
                     })
@@ -70,7 +70,7 @@ angular.module('app')
                         resolve: {
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
-                                    return $ocLazyLoad.load(['js/controllers/analysis.js']);
+                                    return $ocLazyLoad.load(['js/controllers/form.js']);
                                 }]
                         }
                     })
@@ -261,16 +261,16 @@ angular.module('app')
                         }
                     })
                     // form
-                    .state('app.form', {
-                        url: '/form',
-                        template: '<div ui-view class="fade-in"></div>',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function (uiLoad) {
-                                    return uiLoad.load('js/controllers/form.js');
-                                }]
-                        }
-                    })
+                    // .state('app.form', {
+                    //     url: '/form',
+                    //     template: '<div ui-view class="fade-in"></div>',
+                    //     resolve: {
+                    //         deps: ['uiLoad',
+                    //             function (uiLoad) {
+                    //                 return uiLoad.load('js/controllers/form.js');
+                    //             }]
+                    //     }
+                    // })
                     .state('app.form.components', {
                         url: '/components',
                         templateUrl: 'tpl/form_components.html',

@@ -572,4 +572,7 @@ app.controller('FlotChartDemoCtrl', ['$scope', '$http', '$sessionStorage', 'home
         $scope.lineOpts.animation = false;
     }, 800);
 
+
+    
+
 }]);
